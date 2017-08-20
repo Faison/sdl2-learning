@@ -29,7 +29,7 @@ GLuint elements[] = {
 };
 
 const char *vertex_shader =
-  "#version 450\n"
+  "#version 450 core\n"
   "in vec2 position;"
   "in vec3 color;"
   "in vec2 texcoord;"
@@ -42,7 +42,7 @@ const char *vertex_shader =
   "}";
 
 const char *fragment_shader =
-  "#version 450\n"
+  "#version 450 core\n"
   "in vec3 Color;"
   "in vec2 Texcoord;"
   "out vec4 outColor;"
