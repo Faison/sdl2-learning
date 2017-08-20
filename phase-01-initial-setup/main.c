@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
   while (factorToSet > -0.1f) {
     glUniform1f(uniFactor, factorToSet);
     glGetUniformfv(shader_program, uniFactor, &setFactor);
-    printf("Factor of %.1f becomes %.1f\n", factorToSet, setFactor);
+    printf("Factor of %.1f becomes %f\n", factorToSet, setFactor);
     factorToSet -= 0.1;
   }
 
