@@ -185,7 +185,17 @@ int main(int argc, char *argv[])
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
+  GLfloat factorToSet = 1.0f;
+  GLfloat setFactor = 0.0f;
   GLint uniFactor = glGetUniformLocation(shader_program, "factor");
+
+  while (factorToSet > -0.1f) {
+    glUniform1f(uniFactor, factorToSet);
+    glGetUniformfv(shader_program, uniFactor, &setFactor);
+    printf("Factor of %.1f becomes %.1f\n", factorToSet, setFactor);
+    factorToSet -= 0.1;
+  }
+
   glUniform1f(uniFactor, 0.6f);
 
   // The game loop setup.
