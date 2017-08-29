@@ -15,7 +15,7 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
 
-#define RATE_LIMIT 20
+#define RATE_LIMIT 16.6
 
 // Define a square's points (the first four points) and a triangle's points (the latter 3).
 GLfloat vertices[] = {
@@ -50,8 +50,9 @@ const char *fragment_shader =
   "in vec2 Texcoord;"
   "out vec4 outColor;"
   "uniform sampler2D tex;"
-  "uniform float factor;"
+  "uniform float counter;"
   "void main() {"
+  "  float factor = sin(counter / 1000.0 * 3.14 * 2) / 2.0 + 0.5;"
   "  if (Texcoord.y < factor) {"
   "    outColor = texture(tex, Texcoord) * vec4(Color, 1.0);"
   "  } else {"
@@ -188,24 +189,16 @@ int main(int argc, char *argv[])
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-  GLfloat factorToSet = 1.0f;
-  GLfloat setFactor = 0.0f;
-  GLint uniFactor = glGetUniformLocation(shader_program, "factor");
+  GLint uniCounter = glGetUniformLocation(shader_program, "counter");
 
-  while (factorToSet > -0.1f) {
-    glUniform1f(uniFactor, factorToSet);
-    glGetUniformfv(shader_program, uniFactor, &setFactor);
-    printf("Factor of %.1f becomes %f\n", factorToSet, setFactor);
-    factorToSet -= 0.1f;
-  }
-
-  glUniform1f(uniFactor, 0.6f);
+  glUniform1f(uniCounter, 0.6f);
 
   // The game loop setup.
   int running = 1;
   unsigned int last_time = 0;
   unsigned int current_time = 0;
   unsigned int mill_store = 0;
+  GLfloat counter = 0.0f;
 
   SDL_Event event;
 
@@ -228,9 +221,10 @@ int main(int argc, char *argv[])
 
     if ( mill_store > RATE_LIMIT && running) {
       for (; mill_store > RATE_LIMIT && running; mill_store -= RATE_LIMIT) {
-
+        counter += RATE_LIMIT;
       }
 
+      glUniform1f(uniCounter, counter);
       // Render stuffs.
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
