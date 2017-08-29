@@ -6,8 +6,11 @@
  */
 #include <stdlib.h>
 #include <stdio.h>
+
 #define GL4_PROTOTYPES 1
+#define GL_GLEXT_PROTOTYPES
 #include <GL/gl.h>
+
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_opengl.h>
